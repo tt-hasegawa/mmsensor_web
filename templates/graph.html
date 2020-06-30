@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>推移</h1>
+<canvas id="myChart"></canvas>
+<script>
+$(function () {
+	graph();
+	function graph() {
+		$.get("/getVentilation/100", function (data) {
+			// var jdata = JSON.parse(data);
+			var ctx = document.getElementById("myChart");
+			var myChart = new Chart(ctx, {
+				type: 'line',
+				data: data,
+				options: {
+					scales: {
+						yAxes: [{
+							ticks: {
+								suggestedMax: 100,
+								suggestedMin: 0,
+								stepSize: 10
+							}
+						}]
+					},
+				}
+			});
+		});
+	}
+});
+</script>
+{% endblock %}

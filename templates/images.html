@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>イメージ</h1>
+{% for image in images %}
+<p>{{image.recdate}}</p>
+<p><img src='data:image/jpg;base64,{{image.images}}' class="img-fluid img-thumbnail"></p>
+{% endfor %}
+{% endblock %}

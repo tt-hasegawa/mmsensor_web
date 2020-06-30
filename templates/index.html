@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="panel panel-head">
+	<h1>現在の三密指数</h1>
+</div>
+<div class="panel panel-body">
+	<div class="container"> 
+		<div class="row">
+			<div class="col-md-4">
+				<p class="bg-info text-white rounded-circle d-flex align-items-center justify-content-center"
+       style="width:200px;height:200px;font-size:48px;"> {{idx}}% </p>
+			</div>
+			<div class="col-md-4">
+				<div class="table-responsive">
+					<table class="table table-bordered table-striped">
+						<tr><td class="info">不快指数</td><td>{{f}} %</td></tr>
+						<tr><td class="info">気温</td><td>{{temperature}} c</td></tr>
+						<tr><td class="info">湿度</td><td>{{humidity}} %</td></tr>
+						<tr><td class="info">人数</td><td>{{person}} 人</td></tr>
+						<tr><td class="info">CO2濃度</td><td>{{co2}} ppm</td></tr>
+					</table>
+					<p>三密指数＝</p>
+					<p>CO2濃度の1000ppmを越える10ppm毎に1%</p>
+					<p>＋不快指数の70%を越える1%</p>
+					<p>+人数3人を越える1名毎に10%</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
