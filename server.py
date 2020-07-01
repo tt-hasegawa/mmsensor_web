@@ -67,6 +67,7 @@ def get_Ventilations(numOfRecord):
         'backgroundColor':'rgba(75,192,192,0.4)',
         'borderColor':'rgba(75,192,192,1)',
         'yAxisID':'y-axis-1',
+        'fill':'false',
         'data':[]
     }
     dataset2 = {
@@ -74,6 +75,7 @@ def get_Ventilations(numOfRecord):
         'backgroundColor':'rgba(192,75,192,0.4)',
         'borderColor':'rgba(192,75,192,1)',        
         'yAxisID':'y-axis-1',
+        'fill':'false',
         'data':[]
     }
     dataset3 = {
@@ -81,6 +83,7 @@ def get_Ventilations(numOfRecord):
         'backgroundColor':'rgba(192,192,75,0.4)',
         'borderColor':'rgba(192,192,75,1)',        
         'yAxisID':'y-axis-1',
+        'fill':'false',
         'data':[]
     }
     dataset4 = {
@@ -88,6 +91,7 @@ def get_Ventilations(numOfRecord):
         'backgroundColor':'rgba(192,75,75,0.4)',
         'borderColor':'rgba(192,75,75,1)',        
         'yAxisID':'y-axis-2',
+        'fill':'false',
         'data':[]
     }
     dataset5 = {
@@ -95,6 +99,7 @@ def get_Ventilations(numOfRecord):
         'backgroundColor':'rgba(75,75,192,0.4)',
         'borderColor':'rgba(75,75,192,1)',        
         'yAxisID':'y-axis-1',
+        'fill':'false',
         'data':[]
     }
     labels = []
