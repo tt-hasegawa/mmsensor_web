@@ -81,7 +81,7 @@ def get_Ventilations(numOfRecord):
         'data':[]
     }
     dataset4 = {
-        'label':'CO2(*10ppm)',
+        'label':'CO2(x-500)/10 ppm)',
         'backgroundColor':'rgba(192,75,75,0.4)',
         'borderColor':'rgba(192,75,75,1)',        
         'data':[]
@@ -98,12 +98,12 @@ def get_Ventilations(numOfRecord):
         key=v.recdate
         labels.append(key)
         # 不快指数の計算
-        f = 0.81*v.temperature + 0.01 * v.humidity * (0.99 * v.temperature - 14.3) + 46.3
+        f = int(0.81*v.temperature + 0.01 * v.humidity * (0.99 * v.temperature - 14.3) + 46.3)
 
         dataset1['data'].append(v.temperature)
         dataset2['data'].append(v.humidity)
         dataset3['data'].append(v.population*10) # 人数×10をグラフ表示
-        dataset4['data'].append(v.co2/10) # CO2濃度は1/10 ppmを表示
+        dataset4['data'].append((v.co2-500)/1000*100) # CO2濃度は1/10 ppmを表示
         dataset5['data'].append(f)
         
     # JSON形式で戻り値を返すために整形
@@ -238,7 +238,7 @@ def index():
         p=v.population
         c=v.co2
         # 不快指数の計算
-        f = 0.81*t + 0.01 * h * (0.99*t - 14.3) + 46.3
+        f = int(0.81*t + 0.01 * h * (0.99*t - 14.3) + 46.3)
         idx=0 # 三密指数
         # 人口密度が3人を越える1人毎に10%増加
         if p is not None and p > 3:
