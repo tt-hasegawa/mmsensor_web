@@ -40,8 +40,8 @@ db.create_tables([VentilationInfo])
 
 # パスワード認証用ユーザ設定
 users = {
-    "user": "password",
-}
+        "user": "password",
+        }
 
 # パスワード認証がかかっているページでの認証処理
 @auth.get_password
@@ -63,45 +63,45 @@ def get_Ventilations(numOfRecord):
     # グラフ描画用データセットを準備する。
     # 色や説明はここで変更する。
     dataset1 = {
-        'label':'気温(c)',
-        'backgroundColor':'rgba(75,192,192,0.4)',
-        'borderColor':'rgba(75,192,192,1)',
-        'yAxisID':'y-axis-1',
-        'fill':'false',
-        'data':[]
-    }
+            'label':'気温(c)',
+            'backgroundColor':'rgba(75,192,192,0.4)',
+            'borderColor':'rgba(75,192,192,1)',
+            'yAxisID':'y-axis-1',
+            'fill':'false',
+            'data':[]
+            }
     dataset2 = {
-        'label':'湿度(%)',
-        'backgroundColor':'rgba(192,75,192,0.4)',
-        'borderColor':'rgba(192,75,192,1)',        
-        'yAxisID':'y-axis-1',
-        'fill':'false',
-        'data':[]
-    }
+            'label':'湿度(%)',
+            'backgroundColor':'rgba(192,75,192,0.4)',
+            'borderColor':'rgba(192,75,192,1)',        
+            'yAxisID':'y-axis-1',
+            'fill':'false',
+            'data':[]
+            }
     dataset3 = {
-        'label':'人数(*10人)',
-        'backgroundColor':'rgba(192,192,75,0.4)',
-        'borderColor':'rgba(192,192,75,1)',        
-        'yAxisID':'y-axis-1',
-        'fill':'false',
-        'data':[]
-    }
+            'label':'人数(*10人)',
+            'backgroundColor':'rgba(192,192,75,0.4)',
+            'borderColor':'rgba(192,192,75,1)',        
+            'yAxisID':'y-axis-1',
+            'fill':'false',
+            'data':[]
+            }
     dataset4 = {
-        'label':'CO2(ppm)',
-        'backgroundColor':'rgba(192,75,75,0.4)',
-        'borderColor':'rgba(192,75,75,1)',        
-        'yAxisID':'y-axis-2',
-        'fill':'false',
-        'data':[]
-    }
+            'label':'CO2(ppm)',
+            'backgroundColor':'rgba(192,75,75,0.4)',
+            'borderColor':'rgba(192,75,75,1)',        
+            'yAxisID':'y-axis-2',
+            'fill':'false',
+            'data':[]
+            }
     dataset5 = {
-        'label':'不快指数',
-        'backgroundColor':'rgba(75,75,192,0.4)',
-        'borderColor':'rgba(75,75,192,1)',        
-        'yAxisID':'y-axis-1',
-        'fill':'false',
-        'data':[]
-    }
+            'label':'不快指数',
+            'backgroundColor':'rgba(75,75,192,0.4)',
+            'borderColor':'rgba(75,75,192,1)',        
+            'yAxisID':'y-axis-1',
+            'fill':'false',
+            'data':[]
+            }
     labels = []
     # データを読み込んで、グラフ用に編集しながら追加していく。
     for v in ventilist:
@@ -115,11 +115,64 @@ def get_Ventilations(numOfRecord):
         dataset3['data'].append(v.population*10) # 人数×10をグラフ表示
         dataset4['data'].append(v.co2)
         dataset5['data'].append(f)
-        
+
     # JSON形式で戻り値を返すために整形
     result = {
             "labels":labels,
             "datasets":[dataset1,dataset2,dataset3,dataset4,dataset5]}
+    return make_response(jsonify(result))
+
+# 三密指数の要素を取得するチャート用API
+@app.route('/get3Cfactor', methods=['GET'])
+def get_3Cfactor():
+    idx_p=0 # 人数要因
+    idx_f=0 # 不快指数要因
+    idx_c=0 # CO2濃度要因
+    idx_r=0 # 残り
+
+    try:
+        # 換気情報で、各値が0以外の最新データ1件目を取得する.
+        ventilist = VentilationInfo.select().where(
+                (VentilationInfo.humidity > 0) &
+                (VentilationInfo.temperature > 0) &
+                (VentilationInfo.co2 > 0) &
+                (VentilationInfo.population > 0)
+                ).order_by(VentilationInfo.recdate.desc()).limit(1)
+    except VentilationInfo.DoesNotExist:
+        abort(404)
+    # データがあれば、三密指数を計算する.
+    if len(ventilist) > 0:
+        v = ventilist[0]
+        h=v.humidity
+        t=v.temperature
+        p=v.population
+        c=v.co2
+        # 不快指数の計算
+        f = int(0.81*t + 0.01 * h * (0.99*t - 14.3) + 46.3)
+        # 人口密度が3人を越える1人毎に10%増加
+        if p is not None and p > 3:
+            idx_p=(p-3)*10
+        # 不快指数が70を越える1%毎に1%増加
+        if f > 70:
+            idx_f=(f-70)
+        # CO2濃度が1000を越える10ppm毎に1%増加
+        if c > 1000:
+            idx_c=(c-1000)/10
+        idx_r = 100 - (idx_p+idx_c+idx_f)
+
+
+    # JSON形式で戻り値を返すために整形
+    result = {'labels':['不快指数','CO2濃度','人数',''],
+            'datasets':[
+                {'backgroundColor':
+                    [ 'rgba(75,192,192,0.4)',
+                        'rgba(192,75,192,0.4)',
+                        'rgba(192,192,75,0.4)',
+                        'rgba(75,75,75,0.4)'
+                        ],
+                    'data':[idx_f,idx_c,idx_p,idx_r]
+                    }
+                ]}
     return make_response(jsonify(result))
 
 # データ登録API
@@ -206,7 +259,7 @@ def addCO2():
         if len(ventilist) != 0:
             v = ventilist[0]
             v.co2 = c
-        
+
         # データを保存
         v.save()
     except Exception as e:
