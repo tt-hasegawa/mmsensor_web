@@ -12,7 +12,6 @@
 * サーバ側作業
  herokuアカウントを作成します。
 ```
- pip freeze > requirements.txt
  git init
  git add .
  git commit -m "Initial Commit"
@@ -28,6 +27,10 @@
  heroku create 
 
  →割り当てられたURLが表示されるのでメモっておいてください。
+ 　※無償アカウントではアプリケーションを5つまで配備できます。
+ 　　既に5つ作成済みの方は、一度、不要なアプリケーションを削除してください。
+     https://dashboard.heroku.com/apps
+
 ```
 
 ```
@@ -37,28 +40,14 @@
 * プログラムを修正した場合は以下のコマンドで再度herokuにアップしてください。
 ```
  heroku login
- pip freeze > requirements.txt
  git add .
- git commit -m "initial commit2"
+ git commit -m "Update Comments"
  git push heroku master
 ```
 
-* Raspberry Pi側作業
- raspberrypiフォルダをそのままraspberrypi側の任意のフォルダに転送します。
 
-```
- pip install -r ./requirements.txt
- sh install.sh
-```
+割り当てられたURLをChromeなどのWebブラウザで開けることを確認してください。
+  
+同URLを各センサー担当者に伝えて、データ送信してもらうように設定してもらってください。
 
-```
- vi VentiSensor.py
-
- urlとproxiesの部分を適宜環境に合わせて書き換えます。
-```
-
-```
- python VentiSensor.py
- しばらくすると、温度センサーとカメラの内容がWebサーバにアップされていきます。
-```
 "# mmsensor" 
