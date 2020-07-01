@@ -13,6 +13,13 @@ app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024
 
 DIFF_JST_FROM_UTC = 9
 
+# SQLiteDBの生成
+db=None
+if os.path.exists('/tmp'):
+    db = peewee.SqliteDatabase("/tmp/data.db")
+elif os.path.exists('c:\\temp'):
+    db = peewee.SqliteDatabase("c:\\temp\\data.db")
+
 
 ################################################################################
 # 換気情報データクラス
@@ -27,13 +34,6 @@ class VentilationInfo(peewee.Model):
     class Meta:
         database = db
 ################################################################################
-
-# SQLiteDBの生成
-db=None
-if os.path.exists('/tmp'):
-    db = peewee.SqliteDatabase("/tmp/data.db")
-elif os.path.exists('c:\\temp'):
-    db = peewee.SqliteDatabase("c:\\temp\\data.db")
 
 # テーブルの作成
 db.create_tables([VentilationInfo])
