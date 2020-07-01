@@ -14,13 +14,26 @@ $(function () {
 				data: data,
 				options: {
 					scales: {
-						yAxes: [{
-							ticks: {
-								suggestedMax: 100,
-								suggestedMin: 0,
-								stepSize: 10
+						yAxes: [
+							{id:"y-axis-1",
+								typee:"linear",
+								position:"left",
+								ticks: {
+									suggestedMax: 100,
+									suggestedMin: 0,
+									stepSize: 10
+								}
+							},
+							{id:"y-axis-2",
+								typee:"linear",
+								position:"right",
+								ticks: {
+									suggestedMax: 2000,
+									suggestedMin: 500,
+									stepSize: 100
+								}
 							}
-						}]
+						]
 					},
 				}
 			});

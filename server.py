@@ -66,30 +66,35 @@ def get_Ventilations(numOfRecord):
         'label':'気温(c)',
         'backgroundColor':'rgba(75,192,192,0.4)',
         'borderColor':'rgba(75,192,192,1)',
+        'yAxisID':'y-axis-1',
         'data':[]
     }
     dataset2 = {
         'label':'湿度(%)',
         'backgroundColor':'rgba(192,75,192,0.4)',
         'borderColor':'rgba(192,75,192,1)',        
+        'yAxisID':'y-axis-1',
         'data':[]
     }
     dataset3 = {
-        'label':'人数(人)',
+        'label':'人数(*10人)',
         'backgroundColor':'rgba(192,192,75,0.4)',
         'borderColor':'rgba(192,192,75,1)',        
+        'yAxisID':'y-axis-1',
         'data':[]
     }
     dataset4 = {
-        'label':'CO2(x-500)/10 ppm)',
+        'label':'CO2(ppm)',
         'backgroundColor':'rgba(192,75,75,0.4)',
         'borderColor':'rgba(192,75,75,1)',        
+        'yAxisID':'y-axis-2',
         'data':[]
     }
     dataset5 = {
         'label':'不快指数',
         'backgroundColor':'rgba(75,75,192,0.4)',
         'borderColor':'rgba(75,75,192,1)',        
+        'yAxisID':'y-axis-1',
         'data':[]
     }
     labels = []
@@ -103,11 +108,13 @@ def get_Ventilations(numOfRecord):
         dataset1['data'].append(v.temperature)
         dataset2['data'].append(v.humidity)
         dataset3['data'].append(v.population*10) # 人数×10をグラフ表示
-        dataset4['data'].append((v.co2-500)/1000*100) # CO2濃度は1/10 ppmを表示
+        dataset4['data'].append(v.co2)
         dataset5['data'].append(f)
         
     # JSON形式で戻り値を返すために整形
-    result = {"labels":labels,"datasets":[dataset1,dataset2,dataset3,dataset4,dataset5]}
+    result = {
+            "labels":labels,
+            "datasets":[dataset1,dataset2,dataset3,dataset4,dataset5]}
     return make_response(jsonify(result))
 
 # データ登録API
