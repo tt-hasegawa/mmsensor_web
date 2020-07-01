@@ -6,9 +6,10 @@
 <div class="panel panel-body">
 	<div class="container"> 
 		<div class="row">
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<canvas id="myPieChart" width=200px height=300px></canvas>
 				<script>
+/*Chart.jsに*/
 Chart.plugins.register({
 	afterDatasetsDraw: function(chartInstance, easing) {
 		if (chartInstance.config.type == "doughnut") {
@@ -18,16 +19,12 @@ Chart.plugins.register({
 				if (!meta.hidden) {
 					meta.data.forEach(function(element, index) {
 						ctx.fillStyle = 'white';
-
 						var fontSize = 16;
 						var fontStyle = 'normal';
 						var fontFamily = 'Helvetica Neue';
 						ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
-
-
 						var dataString = chartInstance.data.labels[index];
 						var dataString2 = dataset.data[index];
-
 						ctx.textAlign = 'center';
 						ctx.textBaseline = 'middle';
 
@@ -78,7 +75,7 @@ $(function () {
 
 				</script>
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<div class="table-responsive">
 					<table class="table table-bordered table-striped">
 						<tr><td class="info">不快指数</td><td>{{f}} %</td></tr>
